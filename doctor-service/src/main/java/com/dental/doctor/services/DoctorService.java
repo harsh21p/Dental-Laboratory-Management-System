@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
+    private final WebClient.Builder webClientBuilder;
 
     public Doctor createDoctor(DoctorRequest doctorRequest) {
         Doctor doctor = Doctor.builder()
@@ -31,6 +33,15 @@ public class DoctorService {
                 .role(doctorRequest.getRole())
                 .build();
         doctorRepository.save(doctor);
+
+//        PagedResponse pagedResponse = webClientBuilder.build().get()
+//                .uri("http://doctor/api/doctors",
+//                        uriBuilder -> uriBuilder.queryParam("name","name")
+//                                .build())
+//                .retrieve()
+//                .bodyToMono(PagedResponse.class)
+//                .block();
+
         return doctor;
     }
 

@@ -1,9 +1,7 @@
 package com.dental.enrollment.repository;
 
 import com.dental.enrollment.model.Role;
-import com.dental.enrollment.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EnrollmentRepository extends JpaRepository<User,String> {
-
+public interface RoleRepository extends JpaRepository<Role,String> {
 }
