@@ -1,26 +1,27 @@
-package com.dental.enrollment.model;
+package com.dental.lab.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 @Entity
-@Table(name = "roles")
+@Table(name = "labs")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Lab {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String userId;
+
     private String name;
 
-    @OneToMany(mappedBy = "role")
-    private Set<User> users = new HashSet<>();
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
+    private String phone;
 }

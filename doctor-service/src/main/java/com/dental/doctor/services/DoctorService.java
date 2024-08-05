@@ -22,51 +22,57 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
-    private final WebClient.Builder webClientBuilder;
 
-    public Doctor createDoctor(DoctorRequest doctorRequest) {
+    public DoctorResponse createDoctor(DoctorRequest doctorRequest) throws Exception {
         Doctor doctor = Doctor.builder()
-                .name(doctorRequest.getName())
-                .surname(doctorRequest.getSurname())
+                .userId(doctorRequest.getUserId())
                 .phone(doctorRequest.getPhone())
                 .email(doctorRequest.getEmail())
-                .role(doctorRequest.getRole())
+                .lastName(doctorRequest.getLastName())
+                .firstName(doctorRequest.getFirstName())
                 .build();
-        doctorRepository.save(doctor);
 
-//        PagedResponse pagedResponse = webClientBuilder.build().get()
-//                .uri("http://doctor/api/doctors",
-//                        uriBuilder -> uriBuilder.queryParam("name","name")
-//                                .build())
-//                .retrieve()
-//                .bodyToMono(PagedResponse.class)
-//                .block();
-
-        return doctor;
+        try {
+            doctorRepository.save(doctor);
+            return DoctorResponse.builder()
+                    .id(doctor.getId())
+                    .firstName(doctor.getFirstName())
+                    .lastName(doctor.getLastName())
+                    .phone(doctor.getPhone())
+                    .email(doctor.getEmail())
+                    .build();
+        } catch (Exception exception) {
+            throw exception;
+        }
     }
 
-    public PagedResponse getDoctors(int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Doctor> doctorPage = doctorRepository.findAll(pageable);
+    public PagedResponse getDoctors(int page, int size) throws Exception{
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Doctor> doctorPage = doctorRepository.findAll(pageable);
 
-        List<DoctorResponse> doctorResponses = doctorPage.stream()
-                .map(this::convertToRetiredItem)
-                .collect(Collectors.toList());
+            List<DoctorResponse> doctorResponses = doctorPage.stream()
+                    .map(this::convertToRetiredItem)
+                    .collect(Collectors.toList());
 
-        return new PagedResponse(
-                doctorResponses,
-                doctorPage.getNumber(),
-                doctorPage.getSize(),
-                doctorPage.getTotalElements(),
-                doctorPage.getTotalPages(),
-                doctorPage.isLast()
-        );
+            return new PagedResponse(
+                    doctorResponses,
+                    doctorPage.getNumber(),
+                    doctorPage.getSize(),
+                    doctorPage.getTotalElements(),
+                    doctorPage.getTotalPages(),
+                    doctorPage.isLast()
+            );
+        }catch (Exception exception){
+            throw exception;
+        }
     }
 
     private DoctorResponse convertToRetiredItem(Doctor doctor) {
         return DoctorResponse.builder()
-                .name(doctor.getName())
-                .surname(doctor.getSurname())
+                .id(doctor.getId())
+                .lastName(doctor.getLastName())
+                .firstName(doctor.getFirstName())
                 .phone(doctor.getPhone())
                 .email(doctor.getEmail())
                 .build();

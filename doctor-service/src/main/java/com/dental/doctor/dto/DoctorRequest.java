@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DoctorRequest {
-    private String name;
-    private String surname;
+    private String userId;
     private String email;
     private String phone;
-    private String role;
+    private String firstName;
+    private String lastName;
 }

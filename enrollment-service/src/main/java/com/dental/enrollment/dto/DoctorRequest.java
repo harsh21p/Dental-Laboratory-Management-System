@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoleRequest {
-    private String name;
+public class DoctorRequest {
+    private String userId;
+    private String email;
+    private String phone;
+    private String firstName;
+    private String lastName;
 }

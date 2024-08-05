@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DoctorResponse {
     private String id;
-    private String name;
-    private String surname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String phone;
 }

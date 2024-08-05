@@ -1,13 +1,14 @@
 package com.dental.enrollment;
 
 import com.dental.enrollment.model.Role;
-import com.dental.enrollment.repository.EnrollmentRepository;
 import com.dental.enrollment.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+
+//import static com.dental.enrollment.services.JwtService.generateSecretKey;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -21,15 +22,15 @@ public class EnrollmentApplication {
 	public CommandLineRunner loadData(RoleRepository roleRepository) {
 		return args -> {
 			Role enrollment1 =  Role.builder()
-					.roleName("ADMIN")
+					.name("ADMIN")
 					.build();
 
 			Role enrollment2 =  Role.builder()
-					.roleName("LAB")
+					.name("LAB")
 					.build();
 
 			Role enrollment3 =  Role.builder()
-					.roleName("DOCTOR")
+					.name("DOCTOR")
 					.build();
 
 			roleRepository.save(enrollment1);

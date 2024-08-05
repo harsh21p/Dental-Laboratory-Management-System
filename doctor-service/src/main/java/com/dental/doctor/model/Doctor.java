@@ -14,9 +14,19 @@ public class Doctor {
      @Id
      @GeneratedValue(strategy = GenerationType.UUID)
      private String id;
-     private String name;
-     private String surname;
+
+     // reference from enrollment service
+     @Column(unique = true)
+     private String userId;
+
+     private String firstName;
+     private String lastName;
+
+
+     @Column(unique = true)
      private String phone;
+
+     @Column(unique = true)
      private String email;
-     private String role;
+
 }

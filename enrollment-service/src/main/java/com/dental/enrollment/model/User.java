@@ -3,13 +3,11 @@ package com.dental.enrollment.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -17,17 +15,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String firstName;
-    private String lastName;
+    @Column(unique = true)
     private String email;
-    private String phoneNumber;
-    private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Column(unique = true)
+    private String phone;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    private String password;
 
 }
