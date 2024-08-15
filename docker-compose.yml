@@ -23,7 +23,7 @@ services:
   gateway-service:
     image: docker.io/nocdentallab/api-gateway:latest
     ports:
-      - "8080:8080"
+      - "80:80"
     depends_on:
       - discovery-service
       - enrollment-service
