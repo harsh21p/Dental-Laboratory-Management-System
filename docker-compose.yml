@@ -21,7 +21,7 @@ services:
       - doctor-service
 
   gateway-service:
-    image: docker.io/nocdentallab/gateway-service:latest
+    image: docker.io/nocdentallab/api-gateway:latest
     ports:
       - "8080:8080"
     depends_on:
