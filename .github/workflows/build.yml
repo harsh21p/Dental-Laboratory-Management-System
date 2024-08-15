@@ -49,8 +49,10 @@ jobs:
     needs: build
     runs-on: [self-hosted]
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
       - name: Deploying...
         run: |
-          cp docker-compose.yml ./
           docker-compose down
           docker-compose up -d
