@@ -3,11 +3,11 @@ name: Build & Deploy Dental Lab Application Backend
 on:
   push:
     branches:
-      - deploy
+      - [deploy]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest]
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -46,11 +46,11 @@ jobs:
         run: mvn clean compile jib:build
 
       - name: Copy Docker Compose file to EC2
-        run: cp docker-compose.yml ip-172-31-44-110
+        run: cp docker-compose.yml [ip-172-31-44-110]
 
   deploy:
     needs: build
-    runs-on: ip-172-31-44-110
+    runs-on: [ip-172-31-44-110]
     steps:
       - name: Deploying...
         run: |
