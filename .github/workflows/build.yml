@@ -1,0 +1,59 @@
+name: Build & Deploy Dental Lab Application Backend
+
+on:
+  push:
+    branches:
+      - deploy
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '22'
+
+      - name: Update Files
+        run: |
+          FILE="doctor-service/src/main/resources/application.properties"
+          FILE1="enrollment-service/src/main/resources/application.properties"
+          FILE2="lab-service/src/main/resources/application.properties"
+          FILE3="pom.xml"
+          sed -i "s|__DB_URL__|${DB_URL}|g" $FILE
+          sed -i "s|__DB_URL__|${DB_URL}|g" $FILE1
+          sed -i "s|__DB_URL__|${DB_URL}|g" $FILE2
+          sed -i "s|__DB_USER__|${DB_USER}|g" $FILE
+          sed -i "s|__DB_USER__|${DB_USER}|g" $FILE1
+          sed -i "s|__DB_USER__|${DB_USER}|g" $FILE2        
+          sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE
+          sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE1
+          sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE2
+          sed -i "s|__DOCKER_USER__|${D_USER}|g" $FILE3
+          sed -i "s|__DOCKER_PASS__|${D_PASS}|g" $FILE3
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          D_USER: ${{ secrets.D_USER }}
+          D_PASS: ${{ secrets.D_PASS }}
+
+      - name: Build Project
+        run: mvn clean compile jib:build
+
+      - name: Copy Docker Compose file to EC2
+        with:
+          source: "docker-compose.yml"
+          target: [ip-172-31-44-110]
+
+  deploy:
+    needs: build
+    runs-on: [ip-172-31-44-110]
+    steps:
+      - name: Deploying...
+        run: |
+          docker-compose down
+          docker-compose up -d

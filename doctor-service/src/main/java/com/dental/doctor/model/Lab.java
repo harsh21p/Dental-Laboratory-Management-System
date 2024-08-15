@@ -1,9 +1,13 @@
-package com.dental.lab.model;
+package com.dental.doctor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.*;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "labs")
@@ -12,7 +16,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"userId","doctors","labMaterials"})
+@JsonIgnoreProperties({"userId","doctors"})
 public class Lab {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,6 +33,7 @@ public class Lab {
     private String phone;
 
     @ManyToMany(mappedBy = "labs", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonIgnoreProperties({"labs","userId"})
     private Set<Doctor> doctors = new HashSet<>();
 
     public void addDoctor(Doctor doctor) {
@@ -37,14 +42,9 @@ public class Lab {
     }
 
     public void removeDoctor(Doctor doctor) {
-         this.doctors.remove(doctor);
-         doctor.getLabs().remove(this);
+        this.doctors.remove(doctor);
+        doctor.getLabs().remove(this);
     }
-
-    @OneToMany(mappedBy = "lab", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Getter
-    @Setter
-    private Set<LabMaterial> labMaterials = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

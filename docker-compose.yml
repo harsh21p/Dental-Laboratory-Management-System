@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  discovery-service:
+    image: nocdentallab/discovery-server:latest
+
+  enrollment-service:
+    image: nocdentallab/enrollment-service:latest
+
+  doctor-service:
+    image: nocdentallab/doctor-service:latest
+    depends_on:
+      - discovery-service
+      - enrollment-service
+
+  lab-service:
+    image: nocdentallab/lab-service:latest
+    depends_on:
+      - discovery-service
+      - enrollment-service
+      - doctor-service
+
+  gateway-service:
+    image: nocdentallab/gateway-service:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service
+      - enrollment-service
+      - doctor-service
+      - lab-service
+

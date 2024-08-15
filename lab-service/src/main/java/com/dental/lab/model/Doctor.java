@@ -1,4 +1,4 @@
-package com.dental.doctor.model;
+package com.dental.lab.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -21,6 +21,7 @@ public class Doctor {
      @GeneratedValue(strategy = GenerationType.UUID)
      private String id;
 
+     // reference from enrollment service
      @Column(unique = true)
      private String userId;
 
@@ -67,3 +68,4 @@ public class Doctor {
      }
 
 }
+
