@@ -54,5 +54,6 @@ jobs:
 
       - name: Deploying...
         run: |
+          sudo dockerd
           docker-compose down
           docker-compose up -d
