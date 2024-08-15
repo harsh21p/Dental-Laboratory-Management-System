@@ -46,11 +46,11 @@ jobs:
         run: mvn clean compile jib:build
 
       - name: Copy Docker Compose file to EC2
-        run: cp docker-compose.yml [ip-172-31-44-110]
+        run: cp docker-compose.yml [self-hosted]
 
   deploy:
     needs: build
-    runs-on: [ip-172-31-44-110]
+    runs-on: [self-hosted]
     steps:
       - name: Deploying...
         run: |
