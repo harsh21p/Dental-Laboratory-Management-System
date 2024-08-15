@@ -46,7 +46,7 @@ jobs:
         run: mvn clean compile jib:build
 
       - name: Copy Docker Compose file to EC2
-        run: cp docker-compose.yml [self-hosted]
+        run: cp docker-compose.yml /home/ec2-user/
 
   deploy:
     needs: build
@@ -54,5 +54,6 @@ jobs:
     steps:
       - name: Deploying...
         run: |
+          cp docker-compose.yml /home/ec2-user/
           docker-compose down
           docker-compose up -d
