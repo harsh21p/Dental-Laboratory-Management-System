@@ -49,8 +49,10 @@ jobs:
     needs: build
     runs-on: [self-hosted]
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
       - name: Deploying...
         run: |
-          cd ~/actions-runner/_work/Dental-Laboratory-Management-System/Dental-Laboratory-Management-System
           sudo docker-compose down
           sudo docker-compose up -d
