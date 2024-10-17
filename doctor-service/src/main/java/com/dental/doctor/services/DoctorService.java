@@ -54,7 +54,7 @@ public class DoctorService {
                     doctorPage.getTotalPages(),
                     doctorPage.isLast()
             );
-        }catch (Exception exception){
+        } catch (Exception exception){
             throw exception;
         }
     }

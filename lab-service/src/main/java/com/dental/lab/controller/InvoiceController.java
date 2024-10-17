@@ -1,6 +1,7 @@
 package com.dental.lab.controller;
 
 import com.dental.lab.dto.ApiResponse;
+import com.dental.lab.dto.FilterRequest;
 import com.dental.lab.dto.InvoiceRequest;
 import com.dental.lab.dto.PagedResponse;
 import com.dental.lab.model.Invoice;
@@ -39,14 +40,15 @@ public class InvoiceController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<PagedResponse<Invoice>>> getAllInvoices(@RequestParam(defaultValue = "0", required = false) int page, @RequestParam(defaultValue = "10",required = false) int size) {
+    @PostMapping("/get-invoice-filter")
+    public ResponseEntity<ApiResponse<PagedResponse<Invoice>>> getAllInvoices(@RequestBody FilterRequest filterRequest) {
         try {
-            ApiResponse<PagedResponse<Invoice>> response = new ApiResponse<>(200,false, "Data fetched successfully", invoiceService.getAllInvoices(page,size));
+            ApiResponse<PagedResponse<Invoice>> response = new ApiResponse<>(200,false, "Data fetched successfully", invoiceService.getFilteredInvoices(filterRequest.getStartDate(),filterRequest.getEndDate(),filterRequest.getLabId(),filterRequest.getDoctorId(),filterRequest.getEntries(),filterRequest.getPage(),filterRequest.getSize()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<PagedResponse<Invoice>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
+
 }

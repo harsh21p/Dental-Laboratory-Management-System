@@ -1,5 +1,6 @@
 package com.dental.lab.services;
 
+import com.dental.lab.config.InvoiceSpecification;
 import com.dental.lab.dto.PagedResponse;
 import com.dental.lab.model.Entry;
 import com.dental.lab.model.Invoice;
@@ -45,11 +46,10 @@ public class InvoiceService {
         }
     }
 
-    public PagedResponse<Invoice> getAllInvoices(int page, int size) throws Exception {
-
+    public PagedResponse<Invoice> getFilteredInvoices(Date startDate, Date endDate, String labId, String doctorId, List<String> entryIds, Integer page, Integer size) throws Exception {
         try {
             Pageable pageable = PageRequest.of(page, size);
-            Page<Invoice> labPage = invoiceRepository.findAll(pageable);
+            Page<Invoice> labPage = invoiceRepository.findAll(InvoiceSpecification.filterByParameters(startDate, endDate, labId, doctorId, entryIds), pageable);
             return new PagedResponse<Invoice>(
                     labPage.getContent(),
                     labPage.getNumber(),
@@ -58,7 +58,7 @@ public class InvoiceService {
                     labPage.getTotalPages(),
                     labPage.isLast()
             );
-        }catch (Exception exception){
+        } catch (Exception exception){
             throw exception;
         }
     }

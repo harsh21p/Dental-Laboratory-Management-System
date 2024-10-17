@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "doctors")
@@ -51,7 +49,6 @@ public class Doctor {
           this.labs.remove(lab);
           lab.getDoctors().remove(this);
      }
-
 
      @Override
      public boolean equals(Object o) {

@@ -38,4 +38,15 @@ public class EntryController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
+
+    @GetMapping("/get-all-by-lab-id")
+    public ResponseEntity<ApiResponse<PagedResponse<Entry>>> getEntriesByLab(@RequestParam String labId, @RequestParam(defaultValue = "0",required = false) int page, @RequestParam(defaultValue = "10",required = false) int size) {
+        try {
+            ApiResponse<PagedResponse<Entry>> response = new ApiResponse<>(200, false, "Data fetched successfully", entryService.getEntriesByLab(labId, page, size));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception exception) {
+            ApiResponse<PagedResponse<Entry>> response = new ApiResponse<>(200, true, "Failed to fetch data: " + exception.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
 }

@@ -29,16 +29,16 @@ public class EntryService {
     public Entry addEntry(String labId, String doctorId, String materialId, Date entryDate) throws Exception {
         try {
             Optional<Lab> labOpt = labRepository.findById(labId);
-            Doctor doctorOpt = labService.getDoctorById(doctorId);
             Optional<Material> materialOpt = materialRepository.findById(materialId);
-
+            Doctor doctor = labService.getDoctorById(doctorId);
             if (labOpt.isPresent() && materialOpt.isPresent()) {
                 Entry entry = new Entry();
                 entry.setLab(labOpt.get());
-                entry.setDoctor(doctorOpt);
                 entry.setMaterial(materialOpt.get());
                 entry.setEntryDate(entryDate);
+                entry.setDoctor(doctor);
                 return entryRepository.save(entry);
+
             } else {
                 throw new IllegalArgumentException("Lab, Doctor, or Material not found");
             }

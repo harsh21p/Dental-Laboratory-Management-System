@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "doctors")
@@ -21,7 +19,6 @@ public class Doctor {
      @GeneratedValue(strategy = GenerationType.UUID)
      private String id;
 
-     // reference from enrollment service
      @Column(unique = true)
      private String userId;
 
@@ -53,7 +50,6 @@ public class Doctor {
           lab.getDoctors().remove(this);
      }
 
-
      @Override
      public boolean equals(Object o) {
           if (this == o) return true;
@@ -67,5 +63,6 @@ public class Doctor {
           return Objects.hash(id);
      }
 
-}
 
+
+}

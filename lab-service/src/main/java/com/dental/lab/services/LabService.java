@@ -110,8 +110,7 @@ public class LabService {
 
             ResponseEntity<ApiResponse<Doctor>> responseEntity = responseEntityMono.block();
             ApiResponse<Doctor> apiResponse = responseEntity.getBody();
-            Doctor doctor = apiResponse.getData();
-            return doctor;
+            return apiResponse.getData();
         } catch (Exception exception){
             throw exception;
         }

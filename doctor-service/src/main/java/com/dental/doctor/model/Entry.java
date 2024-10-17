@@ -1,4 +1,4 @@
-package com.dental.lab.model;
+package com.dental.doctor.model;
 
 
 import jakarta.persistence.*;
@@ -36,7 +36,6 @@ public class Entry {
     @ManyToOne
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
-
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
