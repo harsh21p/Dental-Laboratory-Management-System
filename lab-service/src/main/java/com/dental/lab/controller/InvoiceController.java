@@ -21,7 +21,7 @@ public class InvoiceController {
     @PostMapping
     public ResponseEntity<ApiResponse<Invoice>> createInvoice(@RequestBody InvoiceRequest invoiceRequest) {
         try {
-            ApiResponse<Invoice> response = new ApiResponse<>(200,false, "Data fetched successfully", invoiceService.createInvoice(invoiceRequest.getEntryIds(), invoiceRequest.getInvoiceDate()));
+            ApiResponse<Invoice> response = new ApiResponse<>(200,false, "Data fetched successfully", invoiceService.createInvoice(invoiceRequest.getEntryIds(), invoiceRequest.getInvoiceDate(),invoiceRequest.getLabId(), invoiceRequest.getDoctorId()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<Invoice> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);

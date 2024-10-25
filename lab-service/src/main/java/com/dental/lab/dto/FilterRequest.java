@@ -12,6 +12,8 @@ public class FilterRequest {
     private String labId;
     private String doctorId;
     private String materialId;
+    private String entryId;
+    private String invoiceId;
     private Date startDate;   
     private Date endDate;
     private String name;   

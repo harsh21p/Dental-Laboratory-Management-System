@@ -1,6 +1,7 @@
 package com.dental.lab.controller;
 
 import com.dental.lab.dto.ApiResponse;
+import com.dental.lab.dto.FilterRequest;
 import com.dental.lab.dto.PagedResponse;
 import com.dental.lab.model.Transaction;
 import com.dental.lab.services.TransactionService;
@@ -19,7 +20,7 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<ApiResponse<Transaction>> createTransaction(@RequestBody Transaction transaction) {
         try {
-            ApiResponse<Transaction> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.createTransaction(transaction.getDoctor().getId(), transaction.getLab().getId(), transaction.getTransactionDate(), transaction.getAmount()));
+            ApiResponse<Transaction> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.createTransaction(transaction.getDoctor().getId(), transaction.getLab().getId(), transaction.getTransactionDate(), transaction.getAmount(),transaction.getReason()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<Transaction> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
@@ -27,32 +28,10 @@ public class TransactionController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<PagedResponse<Transaction>>> getAllTransactions(@RequestParam(defaultValue = "0",required = false) int page,@RequestParam(defaultValue = "10",required = false) int size) {
+    @PostMapping("/by-filter")
+    public ResponseEntity<ApiResponse<PagedResponse<Transaction>>> getTransactionsByParam(@RequestBody FilterRequest filterRequest) {
         try {
-            ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.getAllTransactions(page, size));
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception exception){
-            ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-    }
-
-    @GetMapping("/by-doctor")
-    public ResponseEntity<ApiResponse<PagedResponse<Transaction>>> getTransactionsByDoctor(@RequestParam String doctorId,@RequestParam(defaultValue = "0",required = false) int page,@RequestParam(defaultValue = "10",required = false) int size) {
-        try {
-            ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.getTransactionsByDoctor(doctorId,page, size));
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception exception){
-            ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-    }
-
-    @GetMapping("/by-lab")
-    public ResponseEntity<ApiResponse<PagedResponse<Transaction>>> getTransactionsByLab(@RequestParam String labId,@RequestParam(defaultValue = "0",required = false) int page,@RequestParam(defaultValue = "10",required = false) int size) {
-        try {
-            ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.getTransactionsByLab(labId,page, size));
+            ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.getTransactionsByFilter(filterRequest));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<PagedResponse<Transaction>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);

@@ -1,7 +1,11 @@
 package com.dental.lab.services;
 
+import com.dental.lab.config.EntrySpecification;
+import com.dental.lab.config.TransactionSpecification;
+import com.dental.lab.dto.FilterRequest;
 import com.dental.lab.dto.PagedResponse;
 import com.dental.lab.model.Doctor;
+import com.dental.lab.model.Entry;
 import com.dental.lab.model.Lab;
 import com.dental.lab.model.Transaction;
 import com.dental.lab.repository.LabRepository;
@@ -25,7 +29,7 @@ public class TransactionService {
     private final LabRepository labRepository;
     private final LabService labService;
 
-    public Transaction createTransaction(String doctorId, String labId, Date transactionDate, Double amount) throws Exception {
+    public Transaction createTransaction(String doctorId, String labId, Date transactionDate, Double amount,String reason) throws Exception {
         try {
             Transaction transaction = new Transaction();
             transaction.setDoctor(labService.getDoctorById(doctorId));
@@ -34,6 +38,7 @@ public class TransactionService {
             transaction.setCreated(new Date());
             transaction.setAmount(amount);
             transaction.setBalance(setBalance(doctorId,labId,amount));
+            transaction.setReason(reason);
             return transactionRepository.save(transaction);
         } catch (Exception exception){
             throw exception;
@@ -41,7 +46,7 @@ public class TransactionService {
 
     }
 
-    private Double setBalance(String doctorId, String labId, double amount) throws Exception{
+    public Double setBalance(String doctorId, String labId, double amount) throws Exception {
         try {
            Transaction transaction = getLastTransaction(labId,doctorId);
            double balance = transaction.getBalance();
@@ -50,16 +55,17 @@ public class TransactionService {
         } catch (Exception exception){
             if (Objects.equals(exception.getMessage(), "Transaction not found")){
                 return amount;
-            }else {
+            } else {
                 throw exception;
             }
         }
     }
 
-    public PagedResponse<Transaction> getAllTransactions(int page, int size) {
+
+    public  PagedResponse<Transaction> getTransactionsByFilter(FilterRequest filterRequest) throws Exception {
         try {
-            Pageable pageable = PageRequest.of(page, size);
-            Page<Transaction> transactions = transactionRepository.findAll(pageable);
+            Pageable pageable = PageRequest.of(filterRequest.getPage(), filterRequest.getSize());
+            Page<Transaction> transactions = transactionRepository.findAll(TransactionSpecification.filterByParameters(filterRequest.getStartDate(), filterRequest.getEndDate(), filterRequest.getLabId(), filterRequest.getDoctorId(),filterRequest.getEntryId(),filterRequest.getInvoiceId()), pageable);
             return new PagedResponse<Transaction>(
                     transactions.getContent(),
                     transactions.getNumber(),
@@ -68,43 +74,8 @@ public class TransactionService {
                     transactions.getTotalPages(),
                     transactions.isLast()
             );
-        } catch (Exception exception){
-            throw exception;
-        }
-    }
 
-    public PagedResponse<Transaction> getTransactionsByDoctor(String doctorId,int page, int size) throws Exception{
-        try {
-            Doctor doctor = labService.getDoctorById(doctorId);
-            Pageable pageable = PageRequest.of(page, size);
-                Page<Transaction> transactions = transactionRepository.findByDoctor(doctor,pageable);
-                return new PagedResponse<Transaction>(
-                        transactions.getContent(),
-                        transactions.getNumber(),
-                        transactions.getSize(),
-                        transactions.getTotalElements(),
-                        transactions.getTotalPages(),
-                        transactions.isLast()
-                );
 
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    public  PagedResponse<Transaction> getTransactionsByLab(String labId, int page, int size) throws Exception {
-        try {
-            Pageable pageable = PageRequest.of(page, size);
-            Lab lab = labService.getLabById(labId);
-            Page<Transaction> transactions =   transactionRepository.findByLab(lab,pageable);
-            return new PagedResponse<Transaction>(
-                    transactions.getContent(),
-                    transactions.getNumber(),
-                    transactions.getSize(),
-                    transactions.getTotalElements(),
-                    transactions.getTotalPages(),
-                    transactions.isLast()
-            );
         } catch (Exception e) {
             throw e;
         }

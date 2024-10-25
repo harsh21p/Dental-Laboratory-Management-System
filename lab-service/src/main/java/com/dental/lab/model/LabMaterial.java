@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "lab_material")
@@ -41,5 +42,13 @@ public class LabMaterial {
 
     @Column(name = "price")
     private Double price;
+
+    @Column(name = "created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleted;
 
 }

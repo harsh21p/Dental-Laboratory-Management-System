@@ -1,6 +1,7 @@
 package com.dental.doctor.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"entries"})
 public class Entry {
 
     @Id
@@ -29,16 +31,27 @@ public class Entry {
     @JoinColumn(name = "material_id", nullable = false)
     private Material Material;
 
+    @Column(name = "amount")
+    private Double amount;
+
     @Column(name = "entry_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date entryDate;
 
     @ManyToOne
-    @JoinColumn(name = "invoice_id")
-    private Invoice invoice;
-
-    @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+
+    @Column(name = "created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
 
 }

@@ -1,5 +1,7 @@
-package com.dental.lab.model;
+package com.dental.doctor.model;
 
+import com.dental.doctor.model.Entry;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +12,7 @@ import java.util.Date;
 @Table(name = "transactions")
 @Getter
 @Setter
+//@JsonIgnoreProperties({"entries"})
 public class Transaction {
 
     @Id

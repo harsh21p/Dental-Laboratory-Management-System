@@ -63,6 +63,12 @@ public class Doctor {
           return Objects.hash(id);
      }
 
+     @Column(name = "created")
+     @Temporal(TemporalType.TIMESTAMP)
+     private Date created;
 
+     @Column(name = "deleted")
+     @Temporal(TemporalType.TIMESTAMP)
+     private Date deleted;
 
 }

@@ -12,4 +12,5 @@ public class EntryRequest {
     private String doctorId;
     private String materialId;
     private Date entryDate;
+    private Double amount;
 }

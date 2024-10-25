@@ -1,5 +1,7 @@
 package com.dental.doctor.model;
 
+import com.dental.doctor.model.Entry;
+import com.dental.doctor.model.Lab;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"entries"})
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,5 +40,20 @@ public class Invoice {
         entries.remove(entry);
         entry.setInvoice(null);
     }
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "lab_id")
+    private Lab lab;
+
+    @Column(name = "created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
+    @Column(name = "deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleted;
 
 }

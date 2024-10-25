@@ -2,10 +2,13 @@ package com.dental.lab.services;
 
 import com.dental.lab.config.InvoiceSpecification;
 import com.dental.lab.dto.PagedResponse;
+import com.dental.lab.model.Doctor;
 import com.dental.lab.model.Entry;
 import com.dental.lab.model.Invoice;
+import com.dental.lab.model.Lab;
 import com.dental.lab.repository.EntryRepository;
 import com.dental.lab.repository.InvoiceRepository;
+import com.dental.lab.repository.LabRepository;
 import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,16 +27,22 @@ import java.util.Optional;
 public class InvoiceService {
     private final EntryRepository entryRepository;
     private final InvoiceRepository invoiceRepository;
+    private final LabRepository labRepository;
+    private final LabService labService;
 
-    public Invoice createInvoice(List<String> entryIds, Date invoiceDate) {
+    public Invoice createInvoice(List<String> entryIds, Date invoiceDate, String labId, String doctorId) throws Exception{
         Invoice invoice = new Invoice();
+        Doctor doctor = labService.getDoctorById(doctorId);
+        Optional<Lab> labOpt = labRepository.findById(labId);
+        if(labOpt.isPresent()) {
+            invoice.setLab(labOpt.get());
+            invoice.setDoctor(doctor);
+        }
         invoice.setInvoiceDate(invoiceDate);
-
         List<Entry> entries = entryRepository.findAllById(entryIds);
         for (Entry entry : entries) {
             invoice.addEntry(entry);
         }
-
         return invoiceRepository.save(invoice);
     }
 
