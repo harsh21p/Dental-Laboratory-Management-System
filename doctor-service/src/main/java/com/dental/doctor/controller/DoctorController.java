@@ -29,6 +29,18 @@ public class DoctorController {
         }
     }
 
+
+    @PostMapping("/filter")
+    public ResponseEntity<ApiResponse<PagedResponse>> createDoctor(@RequestBody FilterRequest filterRequest) {
+        try {
+            ApiResponse<PagedResponse> response = new ApiResponse<>(200,false, "Data fetched successfully", doctorService.getDoctorsFilter(filterRequest.getPage(),filterRequest.getSize(),filterRequest.getLabId()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception exception){
+            ApiResponse<PagedResponse> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<Doctor>> getDoctor(@RequestParam String doctorId) {
         try {

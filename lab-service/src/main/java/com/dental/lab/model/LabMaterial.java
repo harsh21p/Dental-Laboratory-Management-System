@@ -15,28 +15,15 @@ import java.util.Date;
 @JsonIgnoreProperties({"lab"})
 public class LabMaterial {
 
-    @Embeddable
-    @Getter
-    @Setter
-    public static class LabMaterialId implements Serializable {
-        @Column(name = "lab_id")
-        private String labId;
-
-        @Column(name = "material_id")
-        private String materialId;
-
-    }
-
-    @EmbeddedId
-    private LabMaterialId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne
-    @MapsId("labId")
     @JoinColumn(name = "lab_id")
     private Lab lab;
 
     @ManyToOne
-    @MapsId("materialId")
     @JoinColumn(name = "material_id")
     private Material material;
 

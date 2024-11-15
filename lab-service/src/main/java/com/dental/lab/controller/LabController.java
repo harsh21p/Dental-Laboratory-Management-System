@@ -42,13 +42,25 @@ public class LabController {
         }
     }
 
-    @PostMapping("/addDoctor")
-    public ResponseEntity<ApiResponse<String>> addDoctor(@RequestBody AddDoctorDto addDoctorDto) {
+    @GetMapping("/by-email")
+    public ResponseEntity<ApiResponse<Lab>> getLabByEmail(@RequestParam String email) {
         try {
-            ApiResponse<String> response = new ApiResponse<>(200,false, "Data fetched successfully",labService.addDoctorToLab(addDoctorDto.getDoctorId(),addDoctorDto.getLabId()));
+            ApiResponse<Lab> response = new ApiResponse<>(200,false, "Data fetched successfully", labService.getLabByEmailId(email));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
-            ApiResponse<String> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
+            ApiResponse<Lab> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+
+    @PostMapping("/addDoctor")
+    public ResponseEntity<ApiResponse<AddDoctorDto>> addDoctor(@RequestBody AddDoctorDto addDoctorDto) {
+        try {
+            ApiResponse<AddDoctorDto> response = new ApiResponse<>(200,false, "Data fetched successfully",labService.addDoctorToLab(addDoctorDto.getDoctorId(),addDoctorDto.getLabId()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception exception){
+            ApiResponse<AddDoctorDto> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }

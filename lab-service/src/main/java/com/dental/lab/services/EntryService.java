@@ -32,12 +32,12 @@ public class EntryService {
     public Entry addEntry(String labId, String doctorId, String materialId, Date entryDate,Double amount) throws Exception {
         try {
             Optional<Lab> labOpt = labRepository.findById(labId);
-            Optional<Material> materialOpt = materialRepository.findById(materialId);
+            Optional<LabMaterial> materialOpt = labMaterialRepository.findById(materialId);
             Doctor doctor = labService.getDoctorById(doctorId);
             if (labOpt.isPresent() && materialOpt.isPresent()) {
                 Entry entry = new Entry();
                 entry.setLab(labOpt.get());
-                entry.setMaterial(materialOpt.get());
+                entry.setLabMaterial(materialOpt.get());
                 entry.setEntryDate(entryDate);
                 entry.setDoctor(doctor);
                 entry.setAmount(amount);
@@ -102,11 +102,11 @@ public class EntryService {
     public Entry updateEntry(String entryId, String doctorId, String materialId, Date entryDate, Double amount) throws Exception {
         try {
             Optional<Entry> entryOpt = entryRepository.findById(entryId);
-            Optional<Material> materialOpt = materialRepository.findById(materialId);
+            Optional<LabMaterial> materialOpt = labMaterialRepository.findById(materialId);
             Doctor doctor = labService.getDoctorById(doctorId);
             if (entryOpt.isPresent() && materialOpt.isPresent()) {
                 Entry entry = entryOpt.get();
-                entry.setMaterial(materialOpt.get());
+                entry.setLabMaterial(materialOpt.get());
                 entry.setEntryDate(entryDate);
                 entry.setDoctor(doctor);
                 Double value = entry.getAmount();

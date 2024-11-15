@@ -27,8 +27,7 @@ public class Entry {
     private Lab lab;
 
     @ManyToOne
-    @JoinColumn(name = "material_id", nullable = false)
-    private Material Material;
+    private LabMaterial labMaterial;
 
     @Column(name = "amount")
     private Double amount;

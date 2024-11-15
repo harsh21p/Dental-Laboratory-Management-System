@@ -3,6 +3,7 @@ package com.dental.lab.controller;
 import com.dental.lab.dto.ApiResponse;
 import com.dental.lab.dto.FilterRequest;
 import com.dental.lab.dto.PagedResponse;
+import com.dental.lab.dto.TransactionRequest;
 import com.dental.lab.model.Transaction;
 import com.dental.lab.services.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,9 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Transaction>> createTransaction(@RequestBody Transaction transaction) {
+    public ResponseEntity<ApiResponse<Transaction>> createTransaction(@RequestBody TransactionRequest transactionRequest) {
         try {
-            ApiResponse<Transaction> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.createTransaction(transaction.getDoctor().getId(), transaction.getLab().getId(), transaction.getTransactionDate(), transaction.getAmount(),transaction.getReason()));
+            ApiResponse<Transaction> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.createTransaction(transactionRequest.getDoctorId(), transactionRequest.getLabId(), transactionRequest.getDate(), transactionRequest.getAmount(),transactionRequest.getReason()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<Transaction> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);

@@ -1,6 +1,10 @@
 package com.dental.lab.services;
 
+import com.dental.lab.config.EntrySpecification;
+import com.dental.lab.config.MaterialBasicSpecification;
+import com.dental.lab.config.MaterialSpecification;
 import com.dental.lab.dto.PagedResponse;
+import com.dental.lab.model.Entry;
 import com.dental.lab.model.Lab;
 import com.dental.lab.model.LabMaterial;
 import com.dental.lab.model.Material;
@@ -40,10 +44,6 @@ public class MaterialService {
             Material material = materialOpt.get();
 
             LabMaterial labMaterial = new LabMaterial();
-            LabMaterial.LabMaterialId labMaterialId = new LabMaterial.LabMaterialId();
-            labMaterialId.setLabId(labId);
-            labMaterialId.setMaterialId(materialId);
-            labMaterial.setId(labMaterialId);
             labMaterial.setLab(lab);
             labMaterial.setMaterial(material);
             labMaterial.setPrice(price);
@@ -55,12 +55,8 @@ public class MaterialService {
         }
     }
 
-    public String removeMaterialFromLab(String labId, String materialId) {
-        LabMaterial.LabMaterialId labMaterialId = new LabMaterial.LabMaterialId();
-        labMaterialId.setLabId(labId);
-        labMaterialId.setMaterialId(materialId);
-
-        Optional<LabMaterial> labMaterialOpt = labMaterialRepository.findById(labMaterialId);
+    public String removeMaterialFromLab(String id) {
+        Optional<LabMaterial> labMaterialOpt = labMaterialRepository.findById(id);
         if (labMaterialOpt.isPresent()) {
             labMaterialRepository.delete(labMaterialOpt.get());
             return "Lab material deleted";
@@ -83,6 +79,41 @@ public class MaterialService {
                     materialPage.isLast()
             );
         }catch (Exception exception){
+            throw exception;
+        }
+    }
+
+    public PagedResponse<LabMaterial> getLabMaterialByLab(int page, int size, String labId) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<LabMaterial> labPage = labMaterialRepository.findAll(MaterialSpecification.filterByParameters(null,labId), pageable);
+            return new PagedResponse<LabMaterial>(
+                    labPage.getContent(),
+                    labPage.getNumber(),
+                    labPage.getSize(),
+                    labPage.getTotalElements(),
+                    labPage.getTotalPages(),
+                    labPage.isLast()
+            );
+        } catch (Exception exception){
+            throw exception;
+        }
+    }
+
+
+    public PagedResponse<Material> getMaterial(int page, int size, String name) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Material> labPage = materialRepository.findAll(MaterialBasicSpecification.filterByParameters(name), pageable);
+            return new PagedResponse<Material>(
+                    labPage.getContent(),
+                    labPage.getNumber(),
+                    labPage.getSize(),
+                    labPage.getTotalElements(),
+                    labPage.getTotalPages(),
+                    labPage.isLast()
+            );
+        } catch (Exception exception){
             throw exception;
         }
     }
