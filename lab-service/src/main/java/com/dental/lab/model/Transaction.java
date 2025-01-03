@@ -39,12 +39,9 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @Column(name = "balance")
-    private Double balance;
-
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Date created= new Date();
 
     @Column(name = "deleted")
     @Temporal(TemporalType.TIMESTAMP)

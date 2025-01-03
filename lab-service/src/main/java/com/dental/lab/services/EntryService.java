@@ -28,6 +28,8 @@ public class EntryService {
     private final TransactionRepository transactionRepository;
     private final TransactionService transactionService;
     private final InvoiceRepository invoiceRepository;
+    private final DoctorLabService doctorLabService;
+    private final DoctorLabRepository doctorLabRepository;
 
     public Entry addEntry(String labId, String doctorId, String materialId, Date entryDate,Double amount) throws Exception {
         try {
@@ -42,7 +44,8 @@ public class EntryService {
                 entry.setDoctor(doctor);
                 entry.setAmount(amount);
                 entry.setCreated(new Date());
-                addTransaction(entry,false,amount);
+                transactionService.createTransaction(entry.getDoctor().getId(),entry.getLab().getId(),entry.getEntryDate(),entry.getAmount(),"This is an new entry");
+
                 return entryRepository.save(entry);
             } else {
                 throw new IllegalArgumentException("Lab, Doctor, or Material not found");
@@ -52,26 +55,8 @@ public class EntryService {
         }
     }
 
-    private Transaction addTransaction(Entry entry,boolean reason, Double amount) throws Exception {
-        try {
-            Transaction transaction = new Transaction();
-            transaction.setEntry(entry);
-            transaction.setDoctor(entry.getDoctor());
-            transaction.setLab(entry.getLab());
-            transaction.setTransactionDate(entry.getEntryDate());
-            transaction.setAmount(entry.getAmount());
-            transaction.setCreated(new Date());
-            transaction.setReason(reason?"This is Updated value for the entry":"This is an new entry");
-            if(reason) {
-                transaction.setBalance(transactionService.setBalance(entry.getDoctor().getId(), entry.getLab().getId(), entry.getAmount() - amount));
-            } else {
-                transaction.setBalance(transactionService.setBalance(entry.getDoctor().getId(), entry.getLab().getId(), amount));
-            }
-            return transactionRepository.save(transaction);
-        } catch (Exception e){
-            throw e;
-        }
-    }
+
+
 
     public Entry getEntryById(String id) throws Exception {
         Optional<Entry> entry = entryRepository.findById(id);
@@ -109,9 +94,11 @@ public class EntryService {
                 entry.setLabMaterial(materialOpt.get());
                 entry.setEntryDate(entryDate);
                 entry.setDoctor(doctor);
-                Double value = entry.getAmount();
                 entry.setAmount(amount);
-                addTransaction(entry,true,value);
+                // Update value
+                double value = entry.getAmount();
+                value = amount - value;
+                transactionService.createTransaction(entry.getDoctor().getId(),entry.getLab().getId(),entry.getEntryDate(),value,"This is Updated value for the entry");
                 return entryRepository.save(entry);
             } else {
                 throw new IllegalArgumentException("Lab, Doctor, or Material not found");

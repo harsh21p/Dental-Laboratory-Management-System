@@ -40,14 +40,4 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/by-lab-doctor-last")
-    public ResponseEntity<ApiResponse<Transaction>> getLastTransactions(@RequestParam String labId,@RequestParam String doctorId) {
-        try {
-            ApiResponse<Transaction> response = new ApiResponse<>(200,false, "Data fetched successfully", transactionService.getLastTransaction(labId,doctorId));
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception exception){
-            ApiResponse<Transaction> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-    }
 }

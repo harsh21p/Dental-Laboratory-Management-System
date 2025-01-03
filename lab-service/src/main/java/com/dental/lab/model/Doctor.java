@@ -65,7 +65,7 @@ public class Doctor {
 
      @Column(name = "created")
      @Temporal(TemporalType.TIMESTAMP)
-     private Date created;
+     private Date created = new Date();
 
      @Column(name = "deleted")
      @Temporal(TemporalType.TIMESTAMP)

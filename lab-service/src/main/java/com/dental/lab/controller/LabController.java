@@ -1,17 +1,17 @@
 package com.dental.lab.controller;
 
-import com.dental.lab.dto.AddDoctorDto;
-import com.dental.lab.dto.ApiResponse;
-import com.dental.lab.dto.LabRequest;
-import com.dental.lab.dto.PagedResponse;
+import com.dental.lab.dto.*;
+import com.dental.lab.model.Balance;
 import com.dental.lab.model.Lab;
+import com.dental.lab.services.DoctorLabService;
 import com.dental.lab.services.LabService;
+import com.dental.lab.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/lab")
@@ -19,6 +19,8 @@ import java.awt.print.Pageable;
 public class LabController {
 
     private final LabService labService;
+    private final TransactionService transactionService;
+    private final DoctorLabService doctorLabService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<Lab>> createLab(@RequestBody LabRequest labRequest) {
@@ -84,6 +86,26 @@ public class LabController {
         } catch (Exception exception){
             ApiResponse<PagedResponse<Lab>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
             return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+    @PostMapping("/get-doctor-by-id")
+    public ResponseEntity<ApiResponse<Double>> getAllLab(@RequestBody FilterRequest filterRequest) {
+        try {
+            ApiResponse<Double> response = new ApiResponse<>(200,false, "Data fetched successfully", getDoctorWithBalance(filterRequest));
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception exception){
+            ApiResponse<Double> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+    private Double getDoctorWithBalance(FilterRequest filterRequest) throws Exception {
+        Optional<Balance> doctorLab = doctorLabService.findByDoctorIdAndLabId(filterRequest.getDoctorId(),filterRequest.getLabId());
+        try {
+            return doctorLab.get().getBalance();
+        } catch (Exception e){
+            return 0.0;
         }
     }
 }
