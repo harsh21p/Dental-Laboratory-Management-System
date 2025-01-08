@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EntrySpecification {
 
-    public static Specification<Entry> filterByParameters(Date startDate, Date endDate, String labId, String doctorId) {
+    public static Specification<Entry> filterByParameters(Date startDate, Date endDate, String labId, List<String> doctorIds) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -22,8 +22,8 @@ public class EntrySpecification {
                 predicates.add(criteriaBuilder.equal(root.get("lab").get("id"), labId));
             }
 
-            if (doctorId != null) {
-                predicates.add(criteriaBuilder.equal(root.get("doctor").get("id"), doctorId));
+            if (doctorIds != null && !doctorIds.isEmpty()) {
+                predicates.add(root.get("doctor").get("id").in(doctorIds));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

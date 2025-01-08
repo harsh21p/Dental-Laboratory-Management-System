@@ -22,7 +22,7 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
 
     @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -30,7 +30,7 @@ public class Material {
 
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created= new Date();
+    private Date created = new Date();
 
     @Column(name = "deleted")
     @Temporal(TemporalType.TIMESTAMP)

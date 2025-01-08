@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "entries")
@@ -32,9 +33,16 @@ public class Entry {
     @Column(name = "amount")
     private Double amount;
 
+    private Integer unit;
+
+    private String patient;
     @Column(name = "entry_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date entryDate;
+
+    @ElementCollection
+    private List<String> graph;
+
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")

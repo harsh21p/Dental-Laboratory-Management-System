@@ -1,6 +1,5 @@
 package com.dental.doctor.model;
 
-import com.dental.doctor.model.LabMaterial;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"userId","doctors","labMaterials"})
+@JsonIgnoreProperties({"userId","doctors","labMaterials","images"})
 public class Lab {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -25,10 +24,20 @@ public class Lab {
 
     private String userId;
 
-    private String name;
+    private String labName;
+
+    private String ownerName;
+
+    @Column(unique = true)
+    private String labNo;
+
+    private String address;
 
     @Column(unique = true)
     private String email;
+
+    @OneToOne(mappedBy = "lab")
+    private Images images;
 
     @Column(unique = true)
     private String phone;
@@ -66,7 +75,7 @@ public class Lab {
 
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created= new Date();
+    private Date created = new Date();
 
     @Column(name = "deleted")
     @Temporal(TemporalType.TIMESTAMP)

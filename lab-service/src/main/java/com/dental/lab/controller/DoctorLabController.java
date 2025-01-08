@@ -21,7 +21,7 @@ public class DoctorLabController {
     @PostMapping
     public ResponseEntity<ApiResponse<Balance>> getBalance(@RequestBody FilterRequest filterRequest) {
         try {
-            Optional<Balance> doctorLab = doctorLabService.findByDoctorIdAndLabId(filterRequest.getDoctorId(), filterRequest.getLabId());
+            Optional<Balance> doctorLab = doctorLabService.findByDoctorIdAndLabId(filterRequest.getDoctorIdOne(), filterRequest.getLabId());
             if(doctorLab.isPresent()) {
                 return ResponseEntity.status(HttpStatus.CREATED).body( new ApiResponse<>(200, false, "Data fetched successfully", doctorLab.get()));
             } else {

@@ -18,6 +18,10 @@ public class UserRequest {
     private String email;
     private String phone;
     private String password;
+    private String labName;
+    private String labNo;
+    private String address;
+    private String ownerName;
     private String firstName;
     private String lastName;
 }

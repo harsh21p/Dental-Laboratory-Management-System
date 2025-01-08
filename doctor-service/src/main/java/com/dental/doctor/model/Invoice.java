@@ -2,7 +2,6 @@ package com.dental.doctor.model;
 
 import com.dental.doctor.model.Entry;
 import com.dental.doctor.model.Lab;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +39,7 @@ public class Invoice {
         entries.remove(entry);
         entry.setInvoice(null);
     }
+
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;

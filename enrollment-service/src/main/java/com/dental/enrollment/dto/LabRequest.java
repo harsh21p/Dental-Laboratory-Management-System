@@ -14,7 +14,10 @@ public class LabRequest {
     private String userId;
     private String email;
     private String phone;
-    private String firstName;
+    private String labName;
+    private String address;
+    private String labNo;
+    private String ownerName;
 }
 
 

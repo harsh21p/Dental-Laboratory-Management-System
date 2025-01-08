@@ -10,7 +10,8 @@ import java.util.List;
 @Builder
 public class FilterRequest {
     private String labId;
-    private String doctorId;
+    private List<String> doctorId;
+    private String doctorIdOne;
     private String materialId;
     private String entryId;
     private String invoiceId;

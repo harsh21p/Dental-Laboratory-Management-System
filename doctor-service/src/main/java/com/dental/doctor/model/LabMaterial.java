@@ -1,12 +1,10 @@
 package com.dental.doctor.model;
 
+import com.dental.doctor.model.Lab;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -15,28 +13,15 @@ import java.util.Date;
 @JsonIgnoreProperties({"lab"})
 public class LabMaterial {
 
-    @Embeddable
-    @Getter
-    @Setter
-    public static class LabMaterialId implements Serializable {
-        @Column(name = "lab_id")
-        private String labId;
-
-        @Column(name = "material_id")
-        private String materialId;
-
-    }
-
-    @EmbeddedId
-    private LabMaterialId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne
-    @MapsId("labId")
     @JoinColumn(name = "lab_id")
     private Lab lab;
 
     @ManyToOne
-    @MapsId("materialId")
     @JoinColumn(name = "material_id")
     private Material material;
 

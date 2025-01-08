@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,7 +32,7 @@ public class EntryService {
     private final DoctorLabService doctorLabService;
     private final DoctorLabRepository doctorLabRepository;
 
-    public Entry addEntry(String labId, String doctorId, String materialId, Date entryDate,Double amount) throws Exception {
+    public Entry addEntry(String labId, String doctorId, String materialId, Date entryDate, Double amount, List<String> graph, Integer unit, String patient) throws Exception {
         try {
             Optional<Lab> labOpt = labRepository.findById(labId);
             Optional<LabMaterial> materialOpt = labMaterialRepository.findById(materialId);
@@ -43,9 +44,11 @@ public class EntryService {
                 entry.setEntryDate(entryDate);
                 entry.setDoctor(doctor);
                 entry.setAmount(amount);
+                entry.setGraph(graph);
                 entry.setCreated(new Date());
+                entry.setUnit(unit);
+                entry.setPatient(patient);
                 transactionService.createTransaction(entry.getDoctor().getId(),entry.getLab().getId(),entry.getEntryDate(),entry.getAmount(),"This is an new entry");
-
                 return entryRepository.save(entry);
             } else {
                 throw new IllegalArgumentException("Lab, Doctor, or Material not found");
@@ -54,8 +57,6 @@ public class EntryService {
             throw e;
         }
     }
-
-
 
 
     public Entry getEntryById(String id) throws Exception {
@@ -67,7 +68,7 @@ public class EntryService {
         }
     }
 
-    public PagedResponse<Entry> getEntriesByFilter(Date startDate, Date endDate,String doctorId,String labId,int page, int size) throws Exception {
+    public PagedResponse<Entry> getEntriesByFilter(Date startDate, Date endDate,List<String> doctorId,String labId,int page, int size) throws Exception {
         try {
             Pageable pageable = PageRequest.of(page, size);
             Page<Entry> labPage = entryRepository.findAll(EntrySpecification.filterByParameters(startDate, endDate, labId, doctorId), pageable);
@@ -84,7 +85,7 @@ public class EntryService {
         }
     }
 
-    public Entry updateEntry(String entryId, String doctorId, String materialId, Date entryDate, Double amount) throws Exception {
+    public Entry updateEntry(String entryId, String doctorId, String materialId, Date entryDate, Double amount, List<String> graph, Integer unit, String patient) throws Exception {
         try {
             Optional<Entry> entryOpt = entryRepository.findById(entryId);
             Optional<LabMaterial> materialOpt = labMaterialRepository.findById(materialId);
@@ -95,6 +96,9 @@ public class EntryService {
                 entry.setEntryDate(entryDate);
                 entry.setDoctor(doctor);
                 entry.setAmount(amount);
+                entry.setGraph(graph);
+                entry.setUnit(unit);
+                entry.setPatient(patient);
                 // Update value
                 double value = entry.getAmount();
                 value = amount - value;

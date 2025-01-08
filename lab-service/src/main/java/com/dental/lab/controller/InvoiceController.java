@@ -43,7 +43,7 @@ public class InvoiceController {
     @PostMapping("/get-invoice-filter")
     public ResponseEntity<ApiResponse<PagedResponse<Invoice>>> getAllInvoices(@RequestBody FilterRequest filterRequest) {
         try {
-            ApiResponse<PagedResponse<Invoice>> response = new ApiResponse<>(200,false, "Data fetched successfully", invoiceService.getFilteredInvoices(filterRequest.getStartDate(),filterRequest.getEndDate(),filterRequest.getLabId(),filterRequest.getDoctorId(),filterRequest.getEntries(),filterRequest.getPage(),filterRequest.getSize()));
+            ApiResponse<PagedResponse<Invoice>> response = new ApiResponse<>(200,false, "Data fetched successfully", invoiceService.getFilteredInvoices(filterRequest.getStartDate(),filterRequest.getEndDate(),filterRequest.getLabId(),filterRequest.getDoctorIdOne(),filterRequest.getEntries(),filterRequest.getPage(),filterRequest.getSize()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<PagedResponse<Invoice>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);

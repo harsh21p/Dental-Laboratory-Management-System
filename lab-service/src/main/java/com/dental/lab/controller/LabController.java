@@ -101,7 +101,7 @@ public class LabController {
     }
 
     private Double getDoctorWithBalance(FilterRequest filterRequest) throws Exception {
-        Optional<Balance> doctorLab = doctorLabService.findByDoctorIdAndLabId(filterRequest.getDoctorId(),filterRequest.getLabId());
+        Optional<Balance> doctorLab = doctorLabService.findByDoctorIdAndLabId(filterRequest.getDoctorIdOne(),filterRequest.getLabId());
         try {
             return doctorLab.get().getBalance();
         } catch (Exception e){

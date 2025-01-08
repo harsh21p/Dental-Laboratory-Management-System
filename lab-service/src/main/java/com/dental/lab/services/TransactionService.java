@@ -64,7 +64,7 @@ public class TransactionService {
     public  PagedResponse<Transaction> getTransactionsByFilter(FilterRequest filterRequest) throws Exception {
         try {
             Pageable pageable = PageRequest.of(filterRequest.getPage(), filterRequest.getSize());
-            Page<Transaction> transactions = transactionRepository.findAll(TransactionSpecification.filterByParameters(filterRequest.getStartDate(), filterRequest.getEndDate(), filterRequest.getLabId(), filterRequest.getDoctorId(),filterRequest.getEntryId(),filterRequest.getInvoiceId()), pageable);
+            Page<Transaction> transactions = transactionRepository.findAll(TransactionSpecification.filterByParameters(filterRequest.getStartDate(), filterRequest.getEndDate(), filterRequest.getLabId(), filterRequest.getDoctorIdOne(),filterRequest.getEntryId(),filterRequest.getInvoiceId()), pageable);
             return new PagedResponse<Transaction>(
                     transactions.getContent(),
                     transactions.getNumber(),

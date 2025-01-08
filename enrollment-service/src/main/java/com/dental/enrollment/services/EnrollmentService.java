@@ -39,7 +39,7 @@ public class EnrollmentService {
         userRepository.save(user);
         if(Objects.equals(roleName, "DOCTOR")) {
             return createDoctor(user, userRequest);
-        }else {
+        } else {
             return createLab(user, userRequest);
         }
         }catch (Exception exception){
@@ -49,15 +49,14 @@ public class EnrollmentService {
 
     }
     public UserResponse createDoctor(User user,UserRequest userRequest) throws Exception{
-
         try {
-
         DoctorRequest doctorRequest = DoctorRequest.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
                 .phone(user.getPhone())
-                .lastName(userRequest.getLastName())
                 .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .address(userRequest.getAddress())
                 .build();
 
         ParameterizedTypeReference<ApiResponse<UserResponse>> responseType =
@@ -89,7 +88,10 @@ public class EnrollmentService {
                 .userId(user.getId())
                 .email(user.getEmail())
                 .phone(user.getPhone())
-                .firstName(userRequest.getFirstName())
+                .labName(userRequest.getLabName())
+                .address(userRequest.getAddress())
+                .ownerName(userRequest.getOwnerName())
+                .labNo(userRequest.getLabNo())
                 .build();
 
         ParameterizedTypeReference<ApiResponse<UserResponse>> responseType =

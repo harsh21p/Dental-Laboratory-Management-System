@@ -32,7 +32,10 @@ public class LabService {
     public Lab createLab(LabRequest labRequest) throws Exception {
         try {
             Lab lab =  Lab.builder()
-                    .name(labRequest.getFirstName())
+                    .labName(labRequest.getLabName())
+                    .ownerName(labRequest.getOwnerName())
+                    .labNo(labRequest.getLabNo())
+                    .address(labRequest.getAddress())
                     .phone(labRequest.getPhone())
                     .email(labRequest.getEmail())
                     .userId(labRequest.getUserId())

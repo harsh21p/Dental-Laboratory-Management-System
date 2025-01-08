@@ -1,7 +1,8 @@
 package com.dental.doctor.model;
 
 import com.dental.doctor.model.Entry;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.dental.doctor.model.Invoice;
+import com.dental.doctor.model.Lab;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,6 @@ import java.util.Date;
 @Table(name = "transactions")
 @Getter
 @Setter
-//@JsonIgnoreProperties({"entries"})
 public class Transaction {
 
     @Id
@@ -41,9 +41,6 @@ public class Transaction {
 
     @Column(name = "amount", nullable = false)
     private Double amount;
-
-    @Column(name = "balance")
-    private Double balance;
 
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)

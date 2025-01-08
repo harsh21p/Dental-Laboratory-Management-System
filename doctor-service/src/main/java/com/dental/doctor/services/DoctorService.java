@@ -32,6 +32,7 @@ public class DoctorService {
                 .userId(doctorRequest.getUserId())
                 .phone(doctorRequest.getPhone())
                 .email(doctorRequest.getEmail())
+                .address(doctorRequest.getAddress())
                 .lastName(doctorRequest.getLastName())
                 .firstName(doctorRequest.getFirstName())
                 .build();

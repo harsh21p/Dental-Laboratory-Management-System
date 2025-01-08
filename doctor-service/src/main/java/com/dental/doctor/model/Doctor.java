@@ -31,6 +31,12 @@ public class Doctor {
      @Column(unique = true)
      private String email;
 
+     private String address;
+
+     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+     @JsonIgnoreProperties("doctor")
+     private Set<Balance> balances = new HashSet<>();
+
      @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
      @JoinTable(
              name = "doctor_lab",
