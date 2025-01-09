@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>docker-hub</id>
+            <username>nocdentallab</username>
+            <password>__D_PASS__</password>
+        </server>
+    </servers>
+</settings>
