@@ -7,18 +7,18 @@ services:
   enrollment-service:
     image: docker.io/nocdentallab/enrollment-service:latest
 
-#  doctor-service:
-#    image: docker.io/nocdentallab/doctor-service:latest
-#    depends_on:
-#      - discovery-service
-#      - enrollment-service
-#
-#  lab-service:
-#    image: docker.io/nocdentallab/lab-service:latest
-#    depends_on:
-#      - discovery-service
-#      - enrollment-service
-#      - doctor-service
+  doctor-service:
+    image: docker.io/nocdentallab/doctor-service:latest
+    depends_on:
+      - discovery-service
+      - enrollment-service
+
+  lab-service:
+    image: docker.io/nocdentallab/lab-service:latest
+    depends_on:
+      - discovery-service
+      - enrollment-service
+      - doctor-service
 
   gateway-service:
     image: docker.io/nocdentallab/api-gateway:latest
@@ -27,6 +27,6 @@ services:
     depends_on:
       - discovery-service
       - enrollment-service
-#      - doctor-service
-#      - lab-service
+      - doctor-service
+      - lab-service
 
