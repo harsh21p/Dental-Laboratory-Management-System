@@ -3,6 +3,7 @@ name: Build & Deploy Dental Lab Application Backend
 on:
   push:
     branches:
+      - feat/entry
       - deploy
 
 jobs:
