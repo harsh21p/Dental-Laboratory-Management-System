@@ -67,7 +67,7 @@
                         <image>eclipse-temurin:22.0.2_9-jre</image>
                     </from>
                     <to>
-                        <image>registry.hub.docker.com/__D_USER__/${project.artifactId}</image>
+                        <image>registry.hub.docker.com/nocdentallab/${project.artifactId}</image>
                         <auth>
                             <username>__D_USER__</username>
                             <password>__D_PASS__</password>
