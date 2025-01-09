@@ -45,9 +45,13 @@ jobs:
           DB_PASS: ${{ secrets.DB_PASS }}
           D_USER: ${{ secrets.D_USER }}
           D_PASS: ${{ secrets.D_PASS }}
+          PASS_DOC: ${{ secrets.PASS_DOC }}
+          USERNAME_DOC: ${{ secrets.USERNAME_DOC }}
 
       - name: Build Project
-        run: mvn clean compile jib:build
+        run: |
+          mvn clean package -Ddocker.username=${{ secrets.USERNAME_DOC }} -Ddocker.password=${{ secrets.PASS_DOC }}
+          mvn clean compile jib:build
 
       - name: Push Project
         run: mvn clean compile jib:build
