@@ -25,6 +25,7 @@ jobs:
           FILE1="enrollment-service/src/main/resources/application.properties"
           FILE2="lab-service/src/main/resources/application.properties"
           FILE3="pom.xml"
+          FILE4="settings.xml"
           sed -i "s|__DB_URL__|${DB_URL}|g" $FILE
           sed -i "s|__DB_URL__|${DB_URL}|g" $FILE1
           sed -i "s|__DB_URL__|${DB_URL}|g" $FILE2
@@ -36,6 +37,8 @@ jobs:
           sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE2
           sed -i "s|__D_USER__|${USERNAME_DOC}|g" $FILE3
           sed -i "s|__D_PASS__|${PASS_DOC}|g" $FILE3
+          sed -i "s|__D_PASS__|${PASS_DOC}|g" $FILE4
+
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USER: ${{ secrets.DB_USER }}
