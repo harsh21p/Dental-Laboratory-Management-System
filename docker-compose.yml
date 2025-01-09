@@ -6,6 +6,8 @@ services:
 
   enrollment-service:
     image: docker.io/nocdentallab/enrollment-service:latest
+    depends_on:
+      - discovery-service
 
   doctor-service:
     image: docker.io/nocdentallab/doctor-service:latest
