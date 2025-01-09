@@ -1,6 +1,8 @@
 package com.dental.lab.controller;
 
 import com.dental.lab.dto.ApiResponse;
+import com.dental.lab.dto.FilterRequest;
+import com.dental.lab.dto.LabMaterialDto;
 import com.dental.lab.dto.PagedResponse;
 import com.dental.lab.model.LabMaterial;
 import com.dental.lab.model.Material;
@@ -10,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/lab/material")
@@ -31,10 +32,10 @@ public class MaterialController {
     }
 
     @PostMapping("/add-to-lab")
-    public ResponseEntity<ApiResponse<LabMaterial>> addMaterialToLab(@RequestParam String labId, @RequestParam String materialId, @RequestParam Double price) {
+    public ResponseEntity<ApiResponse<LabMaterial>> addMaterialToLab(@RequestBody LabMaterialDto labMaterialDto) {
 
         try {
-            ApiResponse<LabMaterial> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.addMaterialToLab(labId, materialId, price));
+            ApiResponse<LabMaterial> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.addMaterialToLab(labMaterialDto.getLabId(), labMaterialDto.getMaterialId(), labMaterialDto.getPrice()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<LabMaterial> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
@@ -43,9 +44,9 @@ public class MaterialController {
     }
 
     @DeleteMapping("/remove-from-lab")
-    public ResponseEntity<ApiResponse<String>> removeMaterialFromLab(@RequestParam String labId, @RequestParam String materialId) {
+    public ResponseEntity<ApiResponse<String>> removeMaterialFromLab(@RequestParam String id) {
         try {
-            ApiResponse<String> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.removeMaterialFromLab(labId, materialId));
+            ApiResponse<String> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.removeMaterialFromLab(id));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<String> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
@@ -53,10 +54,22 @@ public class MaterialController {
         }
     }
 
-    @GetMapping("/getAllMaterials")
-    public ResponseEntity<ApiResponse<PagedResponse<Material>>> getAllMaterials(@RequestParam(required = false,defaultValue = "0") Integer page, @RequestParam(required = false,defaultValue = "10") Integer size) {
+    @PostMapping("/lab-material/filter")
+    public ResponseEntity<ApiResponse<PagedResponse<LabMaterial>>> getLabMaterials(@RequestBody FilterRequest request) {
         try {
-            ApiResponse<PagedResponse<Material>> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.getAllMaterial(page,size));
+            ApiResponse<PagedResponse<LabMaterial>> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.getLabMaterialByLab(request.getPage(),request.getSize(), request.getLabId()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception exception){
+            ApiResponse<PagedResponse<LabMaterial>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+
+    @PostMapping("/filter")
+    public ResponseEntity<ApiResponse<PagedResponse<Material>>> getMaterials(@RequestBody FilterRequest request) {
+        try {
+            ApiResponse<PagedResponse<Material>> response = new ApiResponse<>(200,false, "Data fetched successfully",materialService.getMaterial(request.getPage(),request.getSize(), request.getName()));
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception exception){
             ApiResponse<PagedResponse<Material>> response = new ApiResponse<>(200,true, "Failed to fetch data: " + exception.getMessage(), null);

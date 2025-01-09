@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "doctors")
@@ -33,6 +31,12 @@ public class Doctor {
      @Column(unique = true)
      private String email;
 
+     private String address;
+
+     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+     @JsonIgnoreProperties("doctor")
+     private Set<Balance> balances = new HashSet<>();
+
      @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
      @JoinTable(
              name = "doctor_lab",
@@ -52,7 +56,6 @@ public class Doctor {
           lab.getDoctors().remove(this);
      }
 
-
      @Override
      public boolean equals(Object o) {
           if (this == o) return true;
@@ -65,5 +68,13 @@ public class Doctor {
      public int hashCode() {
           return Objects.hash(id);
      }
+
+     @Column(name = "created")
+     @Temporal(TemporalType.TIMESTAMP)
+     private Date created = new Date();
+
+     @Column(name = "deleted")
+     @Temporal(TemporalType.TIMESTAMP)
+     private Date deleted;
 
 }

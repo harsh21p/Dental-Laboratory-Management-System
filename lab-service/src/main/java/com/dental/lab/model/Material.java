@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,9 +21,17 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
 
     @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<LabMaterial> labMaterials = new HashSet<>();
+
+    @Column(name = "created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
+
+    @Column(name = "deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleted;
 }

@@ -33,8 +33,8 @@ jobs:
           sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE
           sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE1
           sed -i "s|__DB_PASS__|${DB_PASS}|g" $FILE2
-          sed -i "s|__D_USER__|${D_USER}|g" $FILE3
-          sed -i "s|__D_PASS__|${D_PASS}|g" $FILE3
+          sed -i "s|__D_USER__|${USERNAME_DOC}|g" $FILE3
+          sed -i "s|__D_PASS__|${PASS_DOC}|g" $FILE3
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USER: ${{ secrets.DB_USER }}
@@ -45,14 +45,17 @@ jobs:
       - name: Build Project
         run: mvn clean compile jib:build
 
-  deploy:
-    needs: build
-    runs-on: [self-hosted]
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
+      - name: Push Project
+        run: mvn clean compile jib:build
 
-      - name: Deploying..
-        run: |
-          sudo docker-compose down
-          sudo docker-compose up -d
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout source
+#        uses: actions/checkout@v3
+#
+#      - name: Deploying...
+#        run: |
+#          sudo docker-compose down
+#          sudo docker-compose up -d

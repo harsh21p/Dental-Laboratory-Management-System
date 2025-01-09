@@ -1,5 +1,6 @@
 package com.dental.doctor.services;
 
+import com.dental.doctor.config.DoctorSpecification;
 import com.dental.doctor.dto.*;
 import com.dental.doctor.model.Doctor;
 import com.dental.doctor.model.Lab;
@@ -26,10 +27,12 @@ public class DoctorService {
     private final WebClient.Builder webClientBuilder;
 
     public Doctor createDoctor(DoctorRequest doctorRequest) throws Exception {
+
         Doctor doctor = Doctor.builder()
                 .userId(doctorRequest.getUserId())
                 .phone(doctorRequest.getPhone())
                 .email(doctorRequest.getEmail())
+                .address(doctorRequest.getAddress())
                 .lastName(doctorRequest.getLastName())
                 .firstName(doctorRequest.getFirstName())
                 .build();
@@ -54,7 +57,24 @@ public class DoctorService {
                     doctorPage.getTotalPages(),
                     doctorPage.isLast()
             );
-        }catch (Exception exception){
+        } catch (Exception exception){
+            throw exception;
+        }
+    }
+
+    public  PagedResponse getDoctorsFilter(int page, int size, String labId) throws Exception {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Doctor> labPage = doctorRepository.findAll(DoctorSpecification.filterByParameters( labId), pageable);
+            return new PagedResponse(
+                    labPage.getContent(),
+                    labPage.getNumber(),
+                    labPage.getSize(),
+                    labPage.getTotalElements(),
+                    labPage.getTotalPages(),
+                    labPage.isLast()
+            );
+        } catch (Exception exception){
             throw exception;
         }
     }
@@ -95,5 +115,7 @@ public class DoctorService {
         Lab lab = apiResponse.getData();
         return lab;
     }
+
+
 
 }

@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LabRequest {
     private String userId;
-    private String firstName;
+    private String labName;
+    private String ownerName;
+    private String labNo;
     private String email;
+    private String address;
     private String phone;
 }

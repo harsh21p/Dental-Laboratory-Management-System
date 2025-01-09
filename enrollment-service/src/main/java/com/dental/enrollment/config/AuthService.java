@@ -1,10 +1,8 @@
 package com.dental.enrollment.config;
 
-
 import com.dental.enrollment.dto.AuthResponse;
 import com.dental.enrollment.dto.Token;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +15,7 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(jwtService.generateToken(username))
+                .id(jwtService.getId(username))
                 .build();
     }
 

@@ -32,7 +32,10 @@ public class LabService {
     public Lab createLab(LabRequest labRequest) throws Exception {
         try {
             Lab lab =  Lab.builder()
-                    .name(labRequest.getFirstName())
+                    .labName(labRequest.getLabName())
+                    .ownerName(labRequest.getOwnerName())
+                    .labNo(labRequest.getLabNo())
+                    .address(labRequest.getAddress())
                     .phone(labRequest.getPhone())
                     .email(labRequest.getEmail())
                     .userId(labRequest.getUserId())
@@ -45,25 +48,35 @@ public class LabService {
     }
 
     public Lab getLabById(String labId) throws Exception {
-       Optional<Lab> labOptional = labRepository.findById(labId);
+        Optional<Lab> labOptional = labRepository.findById(labId);
        if(labOptional.isPresent()) {
            Lab lab = labOptional.get();
-            return lab;
+           return lab;
        } else {
            throw new Exception("Lab not found");
        }
     }
 
-    public String addDoctorToLab(String doctorId, String labId) throws Exception{
+    public Lab getLabByEmailId(String email) throws Exception {
+        Optional<Lab> labOptional = labRepository.findByEmail(email);
+        if(labOptional.isPresent()) {
+            Lab lab = labOptional.get();
+            return lab;
+        } else {
+            throw new Exception("Lab not found");
+        }
+    }
+
+    public AddDoctorDto addDoctorToLab(String doctorId, String labId) throws Exception{
         try {
             Optional<Lab> labOptional = labRepository.findById(labId);
             Doctor userResponse = getDoctorById(doctorId);
             Lab lab = labOptional.get();
             lab.addDoctor(userResponse);
             labRepository.save(lab);
-            return "Doctor added to lab";
+            return AddDoctorDto.builder().doctorId(doctorId).labId(labId).build();
         } catch (Exception exception){
-            return "Failed to add doctor to lab "+exception.getMessage();
+            throw new Exception( "Failed to add doctor to lab "+exception.getMessage());
         }
 
     }
@@ -110,8 +123,7 @@ public class LabService {
 
             ResponseEntity<ApiResponse<Doctor>> responseEntity = responseEntityMono.block();
             ApiResponse<Doctor> apiResponse = responseEntity.getBody();
-            Doctor doctor = apiResponse.getData();
-            return doctor;
+            return apiResponse.getData();
         } catch (Exception exception){
             throw exception;
         }

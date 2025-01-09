@@ -21,21 +21,16 @@ public class EnrollmentApplication {
 	@Bean
 	public CommandLineRunner loadData(RoleRepository roleRepository) {
 		return args -> {
-			Role enrollment1 =  Role.builder()
-					.name("ADMIN")
-					.build();
+			String[] roles = {"ADMIN", "LAB", "DOCTOR"};
 
-			Role enrollment2 =  Role.builder()
-					.name("LAB")
-					.build();
-
-			Role enrollment3 =  Role.builder()
-					.name("DOCTOR")
-					.build();
-
-			roleRepository.save(enrollment1);
-			roleRepository.save(enrollment2);
-			roleRepository.save(enrollment3);
+			for (String roleName : roles) {
+				if (!roleRepository.existsByName(roleName)) {
+					Role role = Role.builder()
+							.name(roleName)
+							.build();
+					roleRepository.save(role);
+				}
+			}
 		};
 	}
 }

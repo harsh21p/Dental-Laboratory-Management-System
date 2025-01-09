@@ -11,7 +11,6 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"entries"})
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,5 +32,21 @@ public class Invoice {
         entries.remove(entry);
         entry.setInvoice(null);
     }
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "lab_id")
+    private Lab lab;
+
+    @Column(name = "created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created= new Date();
+
+    @Column(name = "deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleted;
 
 }

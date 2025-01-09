@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -12,4 +13,8 @@ public class EntryRequest {
     private String doctorId;
     private String materialId;
     private Date entryDate;
+    private Double amount;
+    private List<String> graph;
+    private Integer unit;
+    private String patient;
 }

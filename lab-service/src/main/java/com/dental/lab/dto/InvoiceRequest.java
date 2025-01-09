@@ -12,4 +12,6 @@ import java.util.List;
 public class InvoiceRequest {
     private List<String> entryIds;
     private Date invoiceDate;
+    private String labId;
+    private String doctorId;
 }

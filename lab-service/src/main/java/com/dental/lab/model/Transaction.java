@@ -24,6 +24,14 @@ public class Transaction {
     @JoinColumn(name = "lab_id", nullable = false)
     private Lab lab;
 
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
+    @ManyToOne
+    @JoinColumn(name = "entry_id")
+    private Entry entry;
+
     @Column(name = "transaction_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date transactionDate;
@@ -31,14 +39,14 @@ public class Transaction {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @Column(name = "balance")
-    private Double balance;
-
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Date created= new Date();
 
     @Column(name = "deleted")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deleted;
+
+    @Column(name = "reason")
+    private String reason;
 }
