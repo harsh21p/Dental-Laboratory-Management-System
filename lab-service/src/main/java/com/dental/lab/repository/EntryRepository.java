@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EntryRepository extends JpaRepository<Entry, String> {
     Page<Entry> findAll(Specification<Entry> entrySpecification, Pageable pageable);
+
 }
